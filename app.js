@@ -74,76 +74,12 @@ database.close((err) => {
 });
 */
 
-/*
 app.get("/posts/", async (req, res) => {
   let { page = 1, limit = 10, sort, tag, keyword } = req.query;
   page = parseInt(page);
   limit = parseInt(limit);
   let offset = (page - 1) * limit;
-  let order = [["createdAt", "DESC"]];
-  if (sort) {
-    order = JSON.parse(sort);
-  }
-  let where = {};
-  if (tag) {
-    where.tag = tag;
-  }
-  if (keyword) {
-    where = {
-      [Op.or]: [
-        { title: { [Op.like]: `%${keyword}%` } }, // Corrected syntax here
-        { desc: { [Op.like]: `%${keyword}%` } }, // Corrected syntax here
-      ],
-    };
-  }
-  try {
-    const posts = await Post.findAll({
-      where,
-      order,
-      limit,
-      offset,
-    });
-    res.json(posts);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-app.post("/posts", upload.single("image"), async (req, res) => {
-  try {
-    const post = await Post.create({
-      title: req.body.title,
-      desc: req.body.desc,
-      tag: req.body.tag,
-      image: req.file.location,
-    });
-    res.status(201).json(post);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-*/
-
-/*
-app.get("/posts/", async (request, response) => {
-  const { id } = request.params;
-  const getPostsQuery = `
-    SELECT
-      *
-    FROM
-      posts
-     WHERE id = ${id} ;`;
-  const postsArray = await db.all(getPostsQuery);
-  response.send(postsArray);
-});
-*/
-
-app.get("/posts/", async (req, res) => {
-  let { page = 1, limit = 10, sort, tag, keyword } = req.query;
-  page = parseInt(page);
-  limit = parseInt(limit);
-  let offset = (page - 1) * limit;
-  let order = "DESC"; // Default sorting order
+  let order = "DESC";
 
   if (sort) {
     order = sort.toUpperCase() === "ASC" ? "ASC" : "DESC";
